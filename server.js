@@ -56,30 +56,3 @@ server.on('listening', () => {
 
 // Démarre le serveur
 server.listen(app.get('port')); // Utilise app.get pour récupérer le port
-
-
-// Pourquoi utiliser http.createServer() alors qu'Express peut démarrer tout seul ?
-
-// Avec http.createServer(app), tu as plus de flexibilité, comme :
-
-// Support des WebSockets (ex: socket.io).
-// Gérer plusieurs types de connexions (HTTP et HTTPS en même temps).
-// Ajout de middlewares natifs de http.
-
-// Dans un projet simple, tu pourrais directement faire :
-
-// app.listen(3000, () => console.log('Serveur démarré sur le port 3000'));
-
-// Mais avec createServer(), tu es prêt pour des applications plus complexes ! 🚀
-
-
-// Ce code server.js est réutilisable à 95%, avec quelques ajustements
-
-// Ce server.js peut être utilisé pour chaque projet avec :
-
-//     Un fichier .env pour éviter de toucher au code.
-//     Un port configurable.
-//     Une option pour HTTPS.
-//     Un meilleur système de logs.
-
-// Tu peux donc le copier-coller dans un nouveau projet et ne modifier que les détails dans .env et app.js ! 🚀

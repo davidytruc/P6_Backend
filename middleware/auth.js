@@ -1,8 +1,3 @@
-// Ce middleware protège les routes en vérifiant le jeton JWT (JSON Web Token) envoyé dans les headers de la requête
-// jsonwebtoken est une bibliothèque qui permet de signer et vérifier des tokens JWT
-// Elle est utilisée ici pour décoder et valider le token reçu dans la requête
-// Ici, il protège les routes en s'assurant que l'utilisateur est bien authentifié
-
 import jwt from 'jsonwebtoken';
 
 export default (req, res, next) => {
@@ -22,7 +17,6 @@ export default (req, res, next) => {
         req.auth = { userId: decodedToken.userId };
 
         // Si le token est valide, la requête continue vers la prochaine étape.
-        // Exemple : si l’utilisateur veut modifier un livre, sa requête est autorisée.
         next();
 
     } catch (error) {
