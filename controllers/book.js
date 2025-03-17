@@ -1,5 +1,7 @@
+import sharp from "sharp"; // Pour compresser les images
+import fs from "fs/promises"; // Pour gérer les fichiers
 import Book from "../models/Books.js";
-import { unlink } from "fs/promises";
+// import { unlink } from "fs/promises";
 
 // Créer un livre
 // req.body.book est une chaîne de caractères envoyée dans la requête.
@@ -7,6 +9,9 @@ import { unlink } from "fs/promises";
 // Cela permet de récupérer les données du livre envoyées par le client (titre, auteur, description, etc.).
 export const createBook = async (req, res) => {
     try {
+        console.log("Corps de la requête :", req.body);
+        console.log("Fichier reçu :", req.file);
+
         const bookObject = JSON.parse(req.body.book);
 
         delete bookObject._id;
@@ -17,13 +22,29 @@ export const createBook = async (req, res) => {
             return res.status(400).json({ message: "Aucune image fournie !" });
         }
 
-        // Création d’un nouvel objet Book basé sur bookObject (titre, auteur, description, etc.).
+        // Récupérer la note du créateur depuis `bookObject`
+        const creatorRating = bookObject.ratings?.[0]?.grade || 0; // Note par défaut à 0 si absente
+
+        // Création d’un nom unique pour l'image compressée
+        const filename = `compressed_${Date.now()}.webp`;
+
+        // Compression et sauvegarde de l'image avec Sharp
+        await sharp(req.file.path)
+            .resize({ width: 500 })
+            .toFormat("webp")
+            .webp({ quality: 80 })
+            .toFile(`images/${filename}`);
+
+        // Supprimer l'ancienne image originale (non compressée)
+        await fs.unlink(req.file.path);
+
+        // Création et enregistrement du livre
         const book = new Book({
             ...bookObject,
-            userId: req.auth.userId, // Pour récupérer le userID
-            imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
-            averageRating: 0,
-            ratings: []
+            userId: req.auth.userId,
+            imageUrl: `${req.protocol}://${req.get("host")}/images/${filename}`,
+            ratings: [{ userId: req.auth.userId, grade: creatorRating }],
+            averageRating: creatorRating,
         });
 
         await book.save();
