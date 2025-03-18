@@ -1,6 +1,6 @@
 import express from "express"; // Framework pour créer les routes
 import auth from "../middleware/auth.js"; // Middleware qui vérifie si l’utilisateur est authentifié
-import multer from "../middleware/multer-config.js"; // Middleware qui gère l’upload des fichiers
+import upload from "../middleware/multer-config.js"; // Middleware qui gère l’upload des fichiers
 // Ces fonctions exécutent la logique métier pour chaque route (ex : créer un livre, récupérer les livres, etc.).
 import { 
     createBook, 
@@ -29,10 +29,10 @@ router.get("/bestrating", getBestRatedBooks);
 router.get("/:id", getOneBook);
 
 // Ajouter un nouveau livre, Accès privé (Middleware Auth) + upload Image (Middlewares multer & createBook)
-router.post("/", auth, multer, createBook);
+router.post("/", auth, upload, createBook);
 
 // Modifier un livre, Accès privé (Middleware Auth) + upload Image (Middlewares multer & modifyBook)
-router.put("/:id", auth, multer, modifyBook); // Auth + Image, les deux points ":" signifie qu'il s'agit d'un paramètre
+router.put("/:id", auth, upload, modifyBook); // Auth + Image, les deux points ":" signifie qu'il s'agit d'un paramètre
 
 // Supprimer un livre, Accès privé (Middleware Auth + deleteBook)
 router.delete("/:id", auth, deleteBook); // Auth, les deux points ":" signifie qu'il s'agit d'un paramètre

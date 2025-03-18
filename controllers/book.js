@@ -1,7 +1,7 @@
 import sharp from "sharp"; // Pour compresser les images
 import fs from "fs/promises"; // Pour gérer les fichiers
+import { unlink } from 'fs/promises';
 import Book from "../models/Books.js";
-// import { unlink } from "fs/promises";
 
 // Créer un livre
 // req.body.book est une chaîne de caractères envoyée dans la requête.
@@ -132,9 +132,6 @@ export const deleteBook = async (req, res) => {
 export const rateBook = async (req, res) => {
     try {
         const { userId, rating } = req.body;
-        if (rating < 0 || rating > 5) {
-            return res.status(400).json({ message: "La note doit être entre 0 et 5." });
-        }
 
         const book = await Book.findOne({ _id: req.params.id });
         if (!book) {
