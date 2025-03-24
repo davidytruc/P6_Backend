@@ -15,7 +15,7 @@ const bookSchema = new mongoose.Schema({
             grade: { type: Number, required: true, min: 0, max: 5 }
         }
     ],
-    averageRating: { type: Number, default: 0 }, // Initialisation à 0
+    averageRating: { type: Number, default: 0, set: v => Math.round(v) }, // Initialisation à 0 et arrondi à l'entier
 });
 
 export default mongoose.model("Book", bookSchema);

@@ -28,12 +28,12 @@ export const login = async (req, res) => {
         // User.findOne({ email: req.body.email }) → Cherche un utilisateur avec cet email dans la base de données
         const user = await User.findOne({ email: req.body.email });
         if (!user) {
-            return res.status(401).json({ message: 'Identifiants incorrects' });
+            return res.status(400).json({ message: 'Identifiants incorrects' });
         }
         // bcrypt.compare(password_saisi, password_hashé) → Vérifie si le mot de passe saisi correspond au mot de passe crypté en base de données
         const valid = await bcrypt.compare(req.body.password, user.password);
         if (!valid) {
-            return res.status(401).json({ message: 'Identifiants incorrects' });
+            return res.status(400).json({ message: 'Identifiants incorrects' });
         }
 
         // userId: user._id → Permet au frontend d'identifier l'utilisateur connecté.

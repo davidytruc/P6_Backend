@@ -1,7 +1,7 @@
 import { createServer } from 'http'; //Module HTTP de Node.js, permet de créer un serveur HTTP
 import app from './app.js'; // Importe l'application Express définie dans app.js
 
-const port = process.env.PORT || 3000; //Récupération du port défini par l'environnement, 3000 par défaut
+const port = process.env.PORT || 4000; //Récupération du port défini par l'environnement, 3000 par défaut
 
 // On s'assure que le port est bien un nombre entier positif
 const normalizePort = val => {
